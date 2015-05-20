@@ -106,12 +106,27 @@ class mySQLinterface(object):
 		except mysql.connector.Error as err:
 			print("Failed to create database %s: {}".format(err) % (dbname))
 
-	def connectmySQL(self, username, password, host = "127.0.0.1", dbname = "pythonvoting"):
+	def connectmySQL(self):
+
+		try:
+			with open("sqlconnection_config_pythonvoting.json", 'r') as sqlcfg_file:
+				sqlcfg = json.load(sqlcfg_file)
+		except:
+			print "Error loading sql configuration file.  Please run sql_connection_config_script.py"
+			sys.exit()
+
+		mysql_login = sqlcfg['user']
+		mysql_pass = sqlcfg['password']
+		host = sqlcfg['host']
+		dbport = sqlcfg['port']
+		dbname = sqlcfg['dbname']
+
 		self.dbconfig = {
-		'user': username,
-		'password': password,
-		'host': host,
-		'database': dbname,
+		'user': sqlcfg['user'],
+		'password': sqlcfg['password'],
+		'host': sqlcfg['host'],
+		'port': sqlcfg['port'],
+		'database': sqlcfg['dbname']
 		}
 
 		try:
@@ -128,7 +143,7 @@ class mySQLinterface(object):
 				% (dbname))
 				yn_input = raw_input('Y or N> ')
 				if yesno(yn_input) == True:
-					self.create_DB(username, password, host, dbname)
+					self.create_DB(username, password, self.host, self.dbname)
 				else:
 					print "No database created."
 			else:
@@ -240,6 +255,7 @@ class mySQLinterface(object):
 
 
 sqlcontrol = mySQLinterface()
+sqlcontrol.connectmySQL()
 # sqlcontrol.deleteDB()
 # sqlcontrol.create_DB('root', 't3chn0')
 
