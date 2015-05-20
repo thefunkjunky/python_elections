@@ -6,13 +6,13 @@ import getpass
 # PostgreSQL usernames on different machines
 
 def main():
-	print "Configuring PostgreSQL connection JSON config file."
+	print "Configuring SQL connection JSON config file."
 	projectname = raw_input('Please enter project name.> ')
 	db_name = raw_input('Please enter database name.> ')
 	username = raw_input('Please enter db admin username.> ')
 	password = getpass.getpass('Enter admin password:> ')
 	host = raw_input("Please enter database host server (leave blank for default localhost) > ")
-	port = raw_input("Please enter port number (leave blank for default port 5432.> ")
+	port = raw_input("Please enter port number (5432 for PostgreSQL, 3306 for MySQL.)> ")
 	if host == "": host = "localhost"
 	if port == "": port = 5432
 
